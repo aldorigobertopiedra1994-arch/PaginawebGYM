@@ -6,6 +6,11 @@
   const LOGO = 'assets/images/img-63f37be8073e.png';
   const CATEGORY_ORDER = ['PROTEÍNA','CREATINA','WHEY PROTEIN','BARRA PROTEÍNA','CASEÍNA','AMINOÁCIDOS','PRE-ENTRENO','L-CARNITINA / CLA','COLÁGENO','VITAMINAS','PRODUCTOS NATURALES','QUEMADOR DE GRASA','VITARGO','ACCESORIOS'];
   const EMOJIS = {'AMINOÁCIDOS':'💊','BARRA PROTEÍNA':'🍫','CASEÍNA':'🥛','COLÁGENO':'✨','CREATINA':'⚡','PROTEÍNA':'🥩','L-CARNITINA / CLA':'🔥','PRE-ENTRENO':'💥','PRODUCTOS NATURALES':'🌿','QUEMADOR DE GRASA':'🔥','VITAMINAS':'💊','VITARGO':'🏃','WHEY PROTEIN':'🥤','ACCESORIOS':'🏋️'};
+  const SOCIAL_ICONS = {
+    instagram: `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.8A4.2 4.2 0 1 1 7.8 12 4.2 4.2 0 0 1 12 7.8Zm0 2A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8Zm5.05-3.32a1.03 1.03 0 1 1-1.03 1.03 1.03 1.03 0 0 1 1.03-1.03Z"/></svg>`,
+    facebook: `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.35 22v-8.2h2.75l.52-3.2h-3.27V8.55c0-.93.46-1.84 1.92-1.84h1.49V3.98s-1.35-.23-2.64-.23c-2.69 0-4.45 1.63-4.45 4.57v2.28H7.68v3.2h2.99V22h2.68Z"/></svg>`,
+    tiktok: `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16.6 2c.2 1.7 1.16 3.15 2.72 4.1.8.48 1.68.77 2.68.86v3.24a8.12 8.12 0 0 1-5.36-1.85v7.1c0 3.62-2.93 6.55-6.55 6.55a6.55 6.55 0 0 1 0-13.1c.48 0 .95.05 1.4.15v3.4a3.25 3.25 0 1 0 1.9 2.95V2h3.21Z"/></svg>`
+  };
 
   let catalog = {};
   let config = { instagram: '', facebook: '', whatsapp: '', tiktok: '', address: '' };
@@ -651,10 +656,15 @@
       ['facebook', config.facebook && (config.facebook.startsWith('http') ? config.facebook : `https://${config.facebook}`), 'Facebook'],
       ['tiktok', config.tiktok && (config.tiktok.startsWith('http') ? config.tiktok : `https://tiktok.com/@${config.tiktok.replace('@','')}`), 'TikTok']
     ];
-    links.filter(item => item[1]).forEach(([, url, label]) => {
+    links.filter(item => item[1]).forEach(([network, url, label]) => {
       const anchor = document.createElement('a');
-      anchor.className = 'social-link'; anchor.href = url; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer';
-      anchor.setAttribute('aria-label', label); anchor.textContent = label.charAt(0);
+      anchor.className = `social-link social-link-${network}`;
+      anchor.href = url;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.setAttribute('aria-label', label);
+      anchor.title = label;
+      anchor.innerHTML = SOCIAL_ICONS[network];
       wrap.append(anchor);
     });
   }
