@@ -1,0 +1,26 @@
+{
+  "name": "templo-gym-seguro",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Catálogo Templo GYM con backend seguro, administrador autenticado y base de datos SQLite integrada en Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "admin:create": "node scripts/create-admin.js",
+    "check": "node --check server.js && node --check src/db.js && node --check scripts/create-admin.js && node --check public/js/app.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.8.0",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.1",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "multer": "^2.0.2"
+  }
+}

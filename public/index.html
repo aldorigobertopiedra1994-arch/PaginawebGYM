@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!-- Archivo unificado por ChatGPT: base funcional limpia + diseño amarillo/neón.
+     Se evitaron IDs duplicados para conservar navegación, filtros, carrito y panel admin. -->
+
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="#050505" name="theme-color"/>
+<title>Templo GYM — Suplementos</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Montserrat:wght@600;700;800;900&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- === MOBILE UX FIX: buscador compacto + filtros flotantes === -->
+<link rel="stylesheet" href="css/styles.css"/>
+
+</head>
+<body>
+<!-- TOPBAR -->
+<div id="topbar">
+<a class="logo-wrap" href="#">
+<img alt="Templo GYM" src="assets/images/img-63f37be8073e.png"/>
+<div>
+<div class="logo-text">Templo GYM</div>
+<div class="logo-sub">Suplementos</div>
+</div>
+</a>
+<div class="spacer"></div>
+<button class="header-search-toggle" id="searchToggle" type="button" aria-label="Abrir búsqueda" aria-controls="header-search-panel" aria-expanded="false">
+  <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.8-3.8"></path></svg>
+</button>
+<div class="social-links" id="social-links-wrap"></div>
+<span class="admin-badge" id="adminBadge">
+<svg height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="#4BE884" r="5"></circle></svg>
+    ADMIN ACTIVO
+  </span>
+<button class="admin-btn" id="adminBtn">
+<svg fill="none" height="13" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="13"><rect height="11" rx="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
+    Admin
+  </button>
+<button class="admin-btn active" id="logoutBtn" style="display:none">
+<svg fill="none" height="13" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="13"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"></path></svg>
+    Salir
+  </button>
+</div>
+<!-- BUSCADOR DESPLEGABLE DEL HEADER -->
+<div id="header-search-panel" role="search" aria-hidden="true">
+  <form class="header-search-form" id="headerSearchForm">
+    <label class="header-search-field" for="header-search">
+      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.8-3.8"></path></svg>
+      <input id="header-search" type="search" autocomplete="off" placeholder="Buscar proteína, creatina, marca..."/>
+    </label>
+    <button class="header-search-submit" type="submit">Buscar</button>
+    <button class="header-search-close" id="headerSearchClose" type="button" aria-label="Cerrar búsqueda">×</button>
+  </form>
+</div>
+<!-- CATEGORY STRIP -->
+<nav aria-label="Categorías de productos" id="cat-strip">
+<button aria-label="Ver categorías anteriores" class="cat-nav-btn cat-nav-left" id="catPrevBtn" type="button">‹</button>
+<div id="cat-strip-inner"></div>
+<button aria-label="Ver más categorías" class="cat-nav-btn cat-nav-right" id="catNextBtn" type="button">›</button>
+</nav>
+
+<!-- HERO INICIO PREMIUM -->
+<section class="home-hero" id="inicio">
+  <div class="home-hero-glow"></div>
+  <div class="home-hero-inner">
+    <div class="home-kicker">🏋️ Suplementos · Saraguro, Loja</div>
+    <h1>TEMPLO<br>GYM</h1>
+    <p>Suplementos deportivos de calidad. Proteínas, creatinas, pre-entrenos, vitaminas, accesorios y más productos para alcanzar tus metas.</p>
+    <div class="home-hero-actions">
+      <button class="btn btn-gold" type="button">Buscar producto</button>
+      <button class="btn btn-outline" type="button">Ver catálogo</button>
+    </div>
+  </div>
+</section>
+<!-- SHOP VIEW -->
+<div id="shop-view">
+<!-- FILTROS INTELIGENTES + ACCESOS RÁPIDOS -->
+<section class="filters-panel" aria-label="Filtros del catálogo">
+  <div class="filters-panel-head">
+    <div>
+      <span class="filters-eyebrow">Catálogo inteligente</span>
+      <h2 class="filters-title">Encuentra tu suplemento ideal</h2>
+    </div>
+    <span class="filter-summary" id="filter-summary" aria-live="polite">Todos los productos</span>
+  </div>
+  <div class="filter-chips" role="group" aria-label="Filtrar rápidamente por categoría">
+    <button class="filter-chip active" type="button" data-category="" aria-pressed="true">Todos</button>
+    <button class="filter-chip" type="button" data-category="PROTEÍNA" aria-pressed="false">Proteína</button>
+    <button class="filter-chip" type="button" data-category="CREATINA" aria-pressed="false">Creatina</button>
+    <button class="filter-chip" type="button" data-category="PRE-ENTRENO" aria-pressed="false">Pre-entreno</button>
+    <button class="filter-chip" type="button" data-category="VITAMINAS" aria-pressed="false">Vitaminas</button>
+    <button class="filter-chip" type="button" data-category="ACCESORIOS" aria-pressed="false">Accesorios</button>
+  </div>
+  <div class="catalog-tools" id="catalog-tools">
+    <label class="tool-field tool-search" for="global-search">
+      <span>Buscar producto</span>
+      <div class="field-with-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.8-3.8"></path></svg>
+        <input id="global-search" placeholder="Producto, marca o categoría..." type="search"/>
+      </div>
+    </label>
+    <label class="tool-field" for="goal-filter">
+      <span>Objetivo</span>
+      <select id="goal-filter">
+        <option value="">Todos</option><option value="masa">Subir masa</option><option value="definicion">Definición</option><option value="energia">Energía</option><option value="recuperacion">Recuperación</option><option value="salud">Salud</option><option value="accesorio">Accesorios</option>
+      </select>
+    </label>
+    <label class="tool-field" for="price-filter">
+      <span>Precio</span>
+      <select id="price-filter">
+        <option value="">Todos</option><option value="0-25">Hasta $25</option><option value="25-50">$25 a $50</option><option value="50-80">$50 a $80</option><option value="80-9999">Más de $80</option>
+      </select>
+    </label>
+    <label class="tool-field" for="category-filter">
+      <span>Categoría</span>
+      <select id="category-filter">
+        <option value="">Todas</option>
+        <option value="PROTEÍNA">Proteína</option><option value="CREATINA">Creatina</option><option value="WHEY PROTEIN">Whey Protein</option>
+        <option value="BARRA PROTEÍNA">Barra proteína</option><option value="CASEÍNA">Caseína</option><option value="AMINOÁCIDOS">Aminoácidos</option>
+        <option value="PRE-ENTRENO">Pre-entreno</option><option value="L-CARNITINA / CLA">L-Carnitina / CLA</option><option value="COLÁGENO">Colágeno</option>
+        <option value="VITAMINAS">Vitaminas</option><option value="PRODUCTOS NATURALES">Productos naturales</option><option value="QUEMADOR DE GRASA">Quemador de grasa</option>
+        <option value="VITARGO">Vitargo</option><option value="ACCESORIOS">Accesorios</option>
+      </select>
+    </label>
+    <button class="clear-filter-btn" type="button">✦ Limpiar</button>
+  </div>
+</section>
+<button id="cart-fab" type="button">🛒<span id="cart-count">0</span></button>
+<div id="cart-overlay" aria-hidden="true"></div>
+<aside id="cart-drawer" aria-hidden="true">
+<div class="cart-head"><div class="cart-title">Carrito</div><button class="cart-close">✕</button></div>
+<div class="cart-list" id="cart-list"></div>
+<div class="cart-foot"><div class="cart-total"><span>Total</span><span id="cart-total">$0.00</span></div><button class="btn btn-whatsapp btn-full">💬 Enviar pedido por WhatsApp</button></div>
+</aside>
+<div id="admin-bar">
+<div class="admin-bar-label">
+<div class="pulse"></div>
+      Modo Administrador — Edición Activa
+    </div>
+<div class="admin-bar-actions">
+<button class="btn btn-outline btn-sm">
+<svg fill="none" height="13" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="13"><path d="M12 5v14M5 12h14"></path></svg>
+        Nuevo Producto
+      </button>
+<button class="btn btn-outline btn-sm">
+<svg fill="none" height="13" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="13"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93A10 10 0 0014 2.46V1a1 1 0 00-2 0v1.46A10 10 0 004.93 4.93L3.93 3.93a1 1 0 00-1.41 1.41l1 1A10 10 0 002.46 10H1a1 1 0 000 2h1.46A10 10 0 004.93 17.07l-1 1a1 1 0 001.41 1.41l1-1A10 10 0 0010 21.54V23a1 1 0 002 0v-1.46a10 10 0 005.07-2.47l1 1a1 1 0 001.41-1.41l-1-1A10 10 0 0021.54 14H23a1 1 0 000-2h-1.46A10 10 0 0021.07 6.93l1-1a1 1 0 00-1.41-1.41z"></path></svg>
+        Configurar
+      </button>
+<button class="btn btn-outline btn-sm" id="toggleAllPricesBtn" type="button">🙈 Ocultar precios</button>
+<button class="btn btn-gold btn-sm" id="saveServerStatusBtn" type="button">
+<svg fill="none" height="13" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="13"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        Guardar Todo
+      </button>
+</div>
+</div>
+<div id="products-container"></div>
+  <div id="empty-results"><strong>Sin resultados</strong>Prueba otro nombre, categoría u objetivo.</div>
+</div>
+<!-- LOGIN OVERLAY -->
+<div id="login-view">
+<div class="login-box">
+<div class="login-logo">
+<img alt="Templo GYM" src="assets/images/img-63f37be8073e.png"/>
+<div class="login-logo-text">Templo GYM</div>
+</div>
+<div class="login-title">Panel Admin</div>
+<div class="login-sub">Acceso seguro conectado al servidor</div>
+<div class="error-msg" id="loginError">No se pudo iniciar sesión.</div>
+<div class="form-group">
+<label class="form-label">Usuario</label>
+<input class="form-input" id="loginUser" autocomplete="username" value="admin" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Contraseña</label>
+<input class="form-input" autocomplete="current-password" id="loginPw" placeholder="••••••••" type="password"/>
+</div>
+<button class="btn btn-gold btn-full">Ingresar al Panel</button>
+
+<button class="btn btn-outline btn-full" style="margin-top:10px">Cancelar</button>
+</div>
+</div>
+<!-- ADMIN PANEL (SIDEBAR) -->
+<div id="admin-overlay"></div>
+<div id="admin-panel">
+<div class="panel-header">
+<img alt="" class="panel-logo" src="assets/images/img-63f37be8073e.png"/>
+<div>
+<div class="panel-title">Panel Admin</div>
+<div class="panel-subtitle">Templo GYM</div>
+</div>
+<button class="panel-close">✕</button>
+</div>
+<div class="panel-nav">
+<button class="panel-nav-btn active">Resumen</button>
+<button class="panel-nav-btn">Dashboard PRO</button>
+<button class="panel-nav-btn">Productos</button>
+<button class="panel-nav-btn">Agregar</button>
+<button class="panel-nav-btn">Config</button>
+</div>
+<div class="panel-body">
+<!-- STATS TAB -->
+<div class="panel-section active" id="tab-stats">
+<div class="stats-grid" id="stats-grid"></div>
+<div class="form-divider"></div>
+<div class="form-section-title">Categorías</div>
+<div id="stats-cats" style="display:flex;flex-direction:column;gap:8px"></div>
+</div>
+<div class="panel-section" id="tab-dashboard">
+<div class="form-section-title">Dashboard de ventas y analítica</div>
+<div class="pro-dashboard">
+<div class="pro-metric"><small>Productos</small><strong id="m-products">0</strong></div>
+<div class="pro-metric"><small>Stock visual</small><strong id="m-stock">OK</strong></div>
+<div class="pro-metric"><small>Vistas</small><strong id="m-views">0</strong></div>
+<div class="pro-metric"><small>Carrito</small><strong id="m-cart">0</strong></div>
+</div>
+<div class="sales-table" id="sales-table"></div>
+</div>
+<!-- PRODUCTS TAB -->
+<div class="panel-section" id="tab-products">
+<div class="form-group">
+<input class="form-input" id="search-input" placeholder="Buscar producto..."/>
+</div>
+<div class="form-group">
+<div class="form-label">Filtrar por categoría</div>
+<div class="cat-badge-list" id="filter-cats"></div>
+</div>
+<div id="admin-product-list"></div>
+</div>
+<!-- ADD PRODUCT TAB -->
+<div class="panel-section" id="tab-add">
+<div class="form-section-title">Nuevo Producto</div>
+<div class="form-group">
+<label class="form-label">Categoría</label>
+<select class="form-input" id="new-cat"></select>
+</div>
+<div class="form-group">
+<label class="form-label">Marca</label>
+<input class="form-input" id="new-brand" placeholder="Ej: Optimum Nutrition"/>
+</div>
+<div class="form-group">
+<label class="form-label">Nombre del Producto</label>
+<input class="form-input" id="new-name" placeholder="Ej: GOLD STANDARD WHEY"/>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Presentación</label>
+<input class="form-input" id="new-detail" placeholder="5 Libras"/>
+</div>
+<div class="form-group">
+<label class="form-label">Precio ($)</label>
+<input class="form-input" id="new-price" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">SKU</label>
+<input class="form-input" id="new-sku" placeholder="SUP0001"/>
+</div>
+<div class="form-group">
+<label class="form-label">Imagen del Producto</label>
+<div class="img-upload-area">
+<img alt="" class="img-preview" id="new-img-preview" src=""/>
+<svg fill="none" height="28" id="new-img-icon" stroke="#555" stroke-width="1.5" viewbox="0 0 24 24" width="28"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
+<p id="new-img-label">Clic para subir imagen</p>
+</div>
+<input accept="image/*" id="new-img-input" style="display:none" type="file"/>
+</div>
+<button class="btn btn-gold btn-full">Agregar Producto</button>
+</div>
+<!-- CONFIG TAB -->
+<div class="panel-section" id="tab-config">
+<div class="form-section-title">Redes Sociales</div>
+<div class="social-row">
+<div class="social-icon-wrap">
+<svg fill="#E1306C" height="15" viewbox="0 0 24 24" width="15"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</div>
+<input class="form-input" id="cfg-instagram" placeholder="@templogym"/>
+</div>
+<div class="social-row">
+<div class="social-icon-wrap">
+<svg fill="#1877F2" height="15" viewbox="0 0 24 24" width="15"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</div>
+<input class="form-input" id="cfg-facebook" placeholder="facebook.com/templogym"/>
+</div>
+<div class="social-row">
+<div class="social-icon-wrap">
+<svg fill="#25D366" height="15" viewbox="0 0 24 24" width="15"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+</div>
+<input class="form-input" id="cfg-whatsapp" placeholder="+593 99 999 9999"/>
+</div>
+<div class="social-row">
+<div class="social-icon-wrap">
+<svg fill="currentColor" height="15" viewbox="0 0 24 24" width="15"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"></path></svg>
+</div>
+<input class="form-input" id="cfg-tiktok" placeholder="@templogym"/>
+</div>
+<div class="form-divider"></div>
+<div class="form-section-title">Datos del Negocio</div>
+<div class="form-group">
+<label class="form-label">Dirección / Ciudad</label>
+<input class="form-input" id="cfg-address" placeholder="Saraguro, Loja — Ecuador"/>
+</div>
+<div class="form-divider"></div>
+<div class="form-section-title">Seguridad</div>
+<div class="admin-security-note">
+  🔒 La contraseña se verifica en el servidor y nunca queda escrita en el código público.
+</div>
+
+<div class="form-group">
+<label class="form-label">Nueva Contraseña Admin</label>
+<input class="form-input" autocomplete="new-password" id="cfg-newpw" placeholder="Mínimo 8 caracteres" type="password"/>
+</div><div class="form-group"><label class="form-label">Confirmar nueva contraseña</label>
+<input class="form-input" autocomplete="new-password" id="cfg-confirmpw" placeholder="Repite la contraseña" type="password"/>
+</div>
+<button class="btn btn-gold btn-full">Guardar Configuración</button>
+</div>
+</div>
+</div>
+<!-- PRODUCT EDIT MODAL -->
+<div id="prod-modal">
+<div class="prod-modal-box">
+<div class="modal-header">
+<div class="modal-title" id="modal-title">Editar Producto</div>
+<button class="panel-close">✕</button>
+</div>
+<input id="edit-prod-id" type="hidden"/>
+<input id="edit-prod-cat" type="hidden"/>
+<div class="form-group">
+<label class="form-label">Categoría</label>
+<select class="form-input" id="edit-cat"></select>
+</div>
+<div class="form-group">
+<label class="form-label">Marca</label>
+<input class="form-input" id="edit-brand"/>
+</div>
+<div class="form-group">
+<label class="form-label">Nombre</label>
+<input class="form-input" id="edit-name"/>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Presentación</label>
+<input class="form-input" id="edit-detail"/>
+</div>
+<div class="form-group">
+<label class="form-label">Precio ($)</label>
+<input class="form-input" id="edit-price" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">SKU</label>
+<input class="form-input" id="edit-sku"/>
+</div>
+<div class="form-group">
+<div style="display:flex;gap:8px;margin-bottom:8px">
+<label class="form-label" style="margin:0">Precio Visible</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-left:auto">
+<input checked="" id="edit-show-price" style="accent-color:var(--gold)" type="checkbox"/>
+<span style="font-size:0.78rem;color:var(--slate2)">Mostrar precio</span>
+</label>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Imagen del Producto</label>
+<div class="img-upload-area">
+<img alt="" class="img-preview" id="edit-img-preview" src=""/>
+<svg fill="none" height="28" id="edit-img-icon" stroke="#555" stroke-width="1.5" viewbox="0 0 24 24" width="28"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
+<p id="edit-img-label">Clic para reemplazar imagen</p>
+</div>
+<input accept="image/*" id="edit-img-input" style="display:none" type="file"/>
+</div>
+<div style="display:flex;gap:10px">
+<button class="btn btn-gold" style="flex:1">Guardar Cambios</button>
+<button class="btn btn-danger">Eliminar</button>
+</div>
+</div>
+</div>
+<!-- PRODUCT DETAIL MODAL -->
+<div id="product-detail-modal">
+<div class="product-detail-box">
+<button class="product-detail-close">✕</button>
+<div class="product-detail-grid">
+<div class="product-detail-img" id="detail-img-box"></div>
+<div class="product-detail-info">
+<div class="product-detail-brand" id="detail-brand"></div>
+<h2 class="product-detail-name" id="detail-name"></h2>
+<p class="product-detail-desc" id="detail-desc"></p>
+<div class="product-detail-tabs" id="detail-tags"></div>
+<div class="detail-block"><h3>Beneficios principales</h3><ul id="detail-benefits"></ul></div>
+<div class="detail-block"><h3>Uso sugerido</h3><ul id="detail-usage"></ul></div>
+<div class="product-detail-meta">
+<div class="product-detail-chip"><b>Presentación</b><span id="detail-presentation"></span></div>
+<div class="product-detail-chip"><b>Categoría</b><span id="detail-category"></span></div>
+<div class="product-detail-chip"><b>Precio</b><span id="detail-price"></span></div>
+<div class="product-detail-chip"><b>Código</b><span id="detail-sku"></span></div>
+</div>
+<div class="product-detail-actions">
+<button class="btn btn-whatsapp" id="detail-whatsapp-btn">💬 Pedir por WhatsApp</button>
+<button class="btn btn-outline" id="detail-add-cart-btn">🛒 Agregar al carrito</button>
+<a class="btn btn-info-ghost" id="detail-search-link" rel="noopener" target="_blank">🔎 Ver imagen del producto</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<!-- === FIX: navegación de categorías funcional === -->
+<!-- === FIX DEFINITIVO: filtros + categorías que sí direccionan === -->
+<!-- === FIX FINAL VISUAL + NAVEGACIÓN: barra limpia, sin colores sobrepuestos === -->
+<!-- === FIX DEFINITIVO: filtro por categoría funcional === -->
+<button id="mobile-filter-fab" type="button">⚙ Filtros <span class="dot" id="mobile-filter-count">0</span></button>
+<div id="mobile-filter-overlay"></div>
+<div id="mobile-filter-sheet" role="dialog" aria-modal="true" aria-label="Filtros de productos">
+  <div class="mobile-filter-head">
+    <div class="mobile-filter-title">Filtros</div>
+    <button class="mobile-filter-close" type="button">×</button>
+  </div>
+  <div class="mobile-filter-field">
+    <label for="mobile-goal-filter">Objetivo</label>
+    <select id="mobile-goal-filter"></select>
+  </div>
+  <div class="mobile-filter-field">
+    <label for="mobile-price-filter">Precio</label>
+    <select id="mobile-price-filter"></select>
+  </div>
+  <div class="mobile-filter-field">
+    <label for="mobile-category-filter">Categoría</label>
+    <select id="mobile-category-filter"></select>
+  </div>
+  <div class="mobile-filter-actions">
+    <button class="mobile-filter-clear" type="button">Limpiar</button>
+    <button class="mobile-filter-apply" type="button">Aplicar</button>
+  </div>
+</div>
+<!-- === FIX MOBILE: ocultar barras al bajar / buscar productos === -->
+
+<script src="js/app.js" defer></script>
+</body>
+</html>
