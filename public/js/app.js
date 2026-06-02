@@ -35,6 +35,7 @@
   function safeImageUrl(value) {
     const url = String(value || '').trim();
     if (/^(assets\/images\/|\/uploads\/)/.test(url)) return url;
+    if (/^https:\/\/tse3\.mm\.bing\.net\/th\?/i.test(url)) return url;
     return LOGO;
   }
   function normalizeText(value) {
@@ -516,7 +517,7 @@
     $('#detail-add-cart-btn').onclick = () => addToCart(cat, id);
     $('#detail-whatsapp-btn').onclick = () => requestSingleProduct(cat, id);
     const searchLink = $('#detail-search-link');
-    searchLink.href = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${prod.brand} ${prod.name} ${prod.detail}`)}`;
+    searchLink.href = prod.imageSearch || `https://www.bing.com/images/search?q=${encodeURIComponent(`${prod.brand} ${prod.name} ${prod.detail} suplemento producto`)}`;
     $('#product-detail-modal')?.classList.add('open');
     syncBodyScroll();
     renderProDashboard();

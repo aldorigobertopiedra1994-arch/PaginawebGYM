@@ -90,3 +90,9 @@ npm run admin:create -- admin "TuClaveSegura123!"
 ```
 
 No escribas tu contraseña real en GitHub ni en archivos públicos.
+
+## Imágenes del catálogo
+
+Los 230 productos iniciales cargan su fotografía desde internet mediante miniaturas públicas basadas en el nombre, marca y presentación del producto, igual que en la versión anterior. Si una imagen externa no carga, la interfaz muestra automáticamente el logo local como respaldo.
+
+Las imágenes nuevas que subas desde el panel administrador se guardan en `storage/uploads/`.
